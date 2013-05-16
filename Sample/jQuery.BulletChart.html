@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>jquery.bulletchart sample</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="jquery.bulletchart.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="jquery-2.0.0.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="jquery.bulletchart.js"></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <h2>jQuery.bulletChart</h2>
+
+        <div class="row">
+            <div class="span5">
+                <h4>Positive bullet chart (current vs total)</h4>
+                <div class="visual-progress-summary-current">35</div>
+                <div style="display: inline-block; width: 80%">
+                    <div class="positive-double"></div>
+                    <div>of 45 h</div>
+                </div>
+            </div>
+
+            <div class="span5">
+                <h4>Negative bullet chart (current vs total)</h4>
+                <div class="visual-progress-summary-current">54.5</div>
+                <div style="display: inline-block; width: 70%">
+                    <div class="negative-double"></div>
+                    <div>of 45 h</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span5">
+                <h4>current vs total (positive) vs baseline</h4>
+                <div class="visual-progress-summary-current">32</div>
+                <div style="display: inline-block; width: 80%">
+                    <div class="positive-tripple"></div>
+                    <div>of 38 hours with baseline of 45</div>
+                </div>
+            </div>
+
+
+            <div class="span5">
+                <h4>current vs total (negative) vs baseline</h4>
+                <div class="visual-progress-summary-current">38</div>
+                <div style="display: inline-block; width: 80%">
+                    <div class="negative-tripple"></div>
+                    <div>of 32 hours with baseline of 45</div>
+                </div>  
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('.positive-double').bulletChart({
+                current: 35,
+                total: 45
+            });
+
+            $('.negative-double').bulletChart({
+                current: 54.5,
+                total: 45
+            });
+
+            $('.positive-tripple').bulletChart({
+                current: 32,
+                total: 38,
+                baseline: 45
+            });
+
+            $('.negative-tripple').bulletChart({
+                current: 38,
+                total: 32,
+                baseline: 45
+            });
+
+        });
+    </script>
+</body>
+</html>

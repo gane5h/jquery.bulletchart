@@ -62,7 +62,8 @@
                     .css('width', width + '%');
 
                 totalValue.append(currentValue);
-                return totalValue;
+                self.append(totalValue);
+                animateSlideToLeft(self);
             } else {
                 width = 100 - (width - 100);
 
@@ -77,18 +78,19 @@
                     .css('width', width + '%');
 
                 currentValue.append(totalValue);
-                return currentValue;
+                self.append(currentValue);
+                animateSlideToLeft(self);
             }
         }
 
         function visualizeCurrentTotalAndBaseline() {
 
-            var firstLayer = baseline > total ? bulletChartClasses.baseline : bulletChartClasses.total;
-
             var totalValue = $('<div>');
             var currentValue = $('<div>');
 
+            var firstLayer = baseline > total ? bulletChartClasses.baseline : bulletChartClasses.total;
             var firstElement = $('<div>').addClass(firstLayer).css('width', '100%');
+
             if (firstLayer == bulletChartClasses.baseline) {
 
                 if (current <= total) {
@@ -107,20 +109,46 @@
 
                     totalValue.append(currentValue);
                     firstElement.append(totalValue);
+                    animateSlideToLeft(self);
 
                 } else {
+                    var totalWidth = (total / current) * 100;
+                    var currentWidth = (total / baseline) * 100;
 
+                    currentValue
+                        .addClass(bulletChartClasses.current)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', currentWidth + '%');
+
+                    totalValue
+                        .addClass(bulletChartClasses.total)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', totalWidth + '%');
+
+                    currentValue.append(totalValue);
+                    firstElement.append(currentValue);
+                    animateSlideToLeft(self);
                 }
             }
 
             self.append(firstElement);
         }
 
+        function animateSlideToLeft(element) {
+
+            var distance = element.css('width');
+
+            element.css('width', '0px').animate({
+                width: distance,
+                duration: 200
+            });
+        }
+
         validateOptions();
         resolveOptions();
 
         if (!baseline) {
-            self.append(createCurrentAndTotal());
+            createCurrentAndTotal();
         } else {
             visualizeCurrentTotalAndBaseline();
         }
