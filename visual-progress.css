@@ -1,0 +1,42 @@
+﻿.visual-progress-container {
+    position: relative;
+    width: 100%;
+}
+
+.visual-progress-overallocated {
+    background-color: #e6b9b8;
+}
+
+.visual-progress-total {
+    border-right: 2px solid black;
+}
+
+.visual-progress-total-unallocated {
+    background-color: #eeece1;
+}
+
+.visual-progress-underallocated {
+    background-color: #9bbb59;
+}
+
+.visual-progress-baseline {
+    background-color: beige;
+    border-right: 2px solid dodgerblue;
+}
+
+.visual-progress-baseline > .visual-progress-unallocated {
+    background-color: #dcdcdc
+}
+
+.visual-progress-total > .visual-progress-current,
+.visual-progress-container > .visual-progress-baseline,
+.visual-progress-current > .visual-progress-total {
+    height: 18px;
+}
+
+.visual-progress-summary-current {
+    display: inline-block;
+    font-size: 32pt;
+    margin-right: 8px;
+    height: 50px;
+}
