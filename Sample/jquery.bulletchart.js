@@ -1,6 +1,7 @@
 ﻿var bulletChartClasses = {
     container: 'visual-progress-container',
     total: 'visual-progress-total',
+    summary: 'visual-progress-summary-current',
     current: 'visual-progress-current',
     baseline: 'visual-progress-baseline',
     unallocated: 'visual-progress-unallocated',
@@ -9,48 +10,98 @@
 };
 
 (function ($) {
-    
+
     $.fn.bulletChart = function (options) {
+
+        if (!String.prototype.format) {
+            String.prototype.format = function () {
+                var args = arguments;
+                return this.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                      ? args[number]
+                      : match;
+                });
+            };
+        }
+
+        options = $.extend({
+            subtitleFormat: 'of {0}h',
+        }, options);
 
         var self = this;
 
-        var current = options.current;
-        var total = options.total;
-        var baseline = options.baseline;
-
-        function validateOptions() {
-            if (!current)
-                throw 'Options must contains an element \'current\'.';
-            if (!total)
-                throw 'Options must contains an element \'total\'.';
-            if (baseline == '')
-                baseline = undefined;
-
+        if (!self.hasClass(bulletChartClasses.container)) {
             self.addClass(bulletChartClasses.container);
         }
 
+        function validateOptions() {
+            if (!options.current)
+                throw 'Options must contains an element \'current\'.';
+            if (!options.total)
+                throw 'Options must contains an element \'total\'.';
+            if (options.baseline == '')
+                options.baseline = undefined;
+        }
+
         function resolveOptions() {
-            if (current.constructor === String) {
-                current = current.replace(',', '.');
-                current = parseFloat(current);
+            if (options.current.constructor === String) {
+                options.current = options.current.replace(',', '.');
+                options.current = parseFloat(options.current);
             }
-            if (total.constructor === String) {
-                total = total.replace(",", ".");
-                total = parseFloat(total);
+            if (options.total.constructor === String) {
+                options.total = options.total.replace(",", ".");
+                options.total = parseFloat(options.total);
             }
-            if (baseline && baseline.constructor === String) {
-                baseline = baseline.replace(',', '.');
-                baseline = parseFloat(baseline);
+            if (options.baseline && options.baseline.constructor === String) {
+                options.baseline = options.baseline.replace(',', '.');
+                options.baseline = parseFloat(options.baseline);
             }
         }
 
-        function createCurrentAndTotal() {
+        function createHtml() {
 
-            var width = (current / total) * 100;
+            var totalWidth = self.width();
+
+            if (options.title) {
+                var title = $('<h4>').text(options.title);
+                self.append(title);
+            }
+
+            // create the summary, containers and subtitle
+            var summary = $('<div>').addClass(bulletChartClasses.summary).text(options.current);
+            self.append(summary);
+
+            var remainigWidth = totalWidth - summary.width();
+            var chartWidth = (Math.floor((remainigWidth / totalWidth) * 100) - 3) + '%';
+
+            var chartContainer = $('<div>').css({ display: 'inline-block', width: chartWidth });
+            self.append(chartContainer);
+
+            var animationContainer = $('<div>').addClass(bulletChartClasses.container);
+            chartContainer.append(animationContainer);
+
+            createBulletCharts(animationContainer);
+
+            var subtitle = !options.baseline ? options.subtitleFormat.format(options.total) : options.subtitleFormat.format(options.total, options.baseline);
+            var subtitleElement = $('<div>').text(subtitle);
+            chartContainer.append(subtitleElement);
+        }
+
+        function createBulletCharts(container) {
+            if (!options.baseline) {
+                createDoubleBulletChart(container);
+            } else {
+                createTripleBulletChart(container);
+            }
+        }
+
+        function createDoubleBulletChart(container) {
+
+            var width = (options.current / options.total) * 100;
             var totalValue = $('<div>');
             var currentValue = $('<div>');
 
-            if (current <= total) {
+            if (options.current <= options.total) {
                 totalValue
                     .addClass(bulletChartClasses.total)
                     .addClass(bulletChartClasses.unallocated)
@@ -62,8 +113,8 @@
                     .css('width', width + '%');
 
                 totalValue.append(currentValue);
-                self.append(totalValue);
-                animateSlideToLeft(self);
+                container.append(totalValue);
+                animateSlideToLeft(container);
             } else {
                 width = 100 - (width - 100);
 
@@ -78,24 +129,23 @@
                     .css('width', width + '%');
 
                 currentValue.append(totalValue);
-                self.append(currentValue);
-                animateSlideToLeft(self);
+                container.append(currentValue);
+                animateSlideToLeft(container);
             }
         }
 
-        function visualizeCurrentTotalAndBaseline() {
-
+        function createTripleBulletChart(container) {
             var totalValue = $('<div>');
             var currentValue = $('<div>');
 
-            var firstLayer = baseline > total ? bulletChartClasses.baseline : bulletChartClasses.total;
+            var firstLayer = options.baseline > options.total ? bulletChartClasses.baseline : bulletChartClasses.total;
             var firstElement = $('<div>').addClass(firstLayer).css('width', '100%');
 
             if (firstLayer == bulletChartClasses.baseline) {
 
-                if (current <= total) {
-                    var totalWidth = (total / baseline) * 100;
-                    var currentWidth = (current / total) * 100;
+                if (options.current <= options.total) {
+                    var totalWidth = (options.total / options.baseline) * 100;
+                    var currentWidth = (options.current / options.total) * 100;
 
                     totalValue
                         .addClass(bulletChartClasses.total)
@@ -109,11 +159,11 @@
 
                     totalValue.append(currentValue);
                     firstElement.append(totalValue);
-                    animateSlideToLeft(self);
+                    animateSlideToLeft(container);
 
                 } else {
-                    var totalWidth = (total / current) * 100;
-                    var currentWidth = (total / baseline) * 100;
+                    var totalWidth = (options.total / options.current) * 100;
+                    var currentWidth = (options.total / options.baseline) * 100;
 
                     currentValue
                         .addClass(bulletChartClasses.current)
@@ -127,11 +177,11 @@
 
                     currentValue.append(totalValue);
                     firstElement.append(currentValue);
-                    animateSlideToLeft(self);
+                    animateSlideToLeft(container);
                 }
             }
 
-            self.append(firstElement);
+            container.append(firstElement);
         }
 
         function animateSlideToLeft(element) {
@@ -146,12 +196,7 @@
 
         validateOptions();
         resolveOptions();
-
-        if (!baseline) {
-            createCurrentAndTotal();
-        } else {
-            visualizeCurrentTotalAndBaseline();
-        }
-    };
+        createHtml();
+    }
 
 }(jQuery));

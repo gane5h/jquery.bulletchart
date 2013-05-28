@@ -20,42 +20,21 @@
 
         <div class="row">
             <div class="span5">
-                <h4>Positive bullet chart (current vs total)</h4>
-                <div class="visual-progress-summary-current">35</div>
-                <div style="display: inline-block; width: 80%">
-                    <div class="positive-double"></div>
-                    <div>of 45 h</div>
-                </div>
+                <div id="positive-double"></div>
             </div>
 
             <div class="span5">
-                <h4>Negative bullet chart (current vs total)</h4>
-                <div class="visual-progress-summary-current">54.5</div>
-                <div style="display: inline-block; width: 70%">
-                    <div class="negative-double"></div>
-                    <div>of 45 h</div>
-                </div>
+                <div id="negative-double"></div>
             </div>
         </div>
 
         <div class="row">
             <div class="span5">
-                <h4>current vs total (positive) vs baseline</h4>
-                <div class="visual-progress-summary-current">32</div>
-                <div style="display: inline-block; width: 80%">
-                    <div class="positive-tripple"></div>
-                    <div>of 38 hours with baseline of 45</div>
-                </div>
+                <div id="positive-tripple"></div>
             </div>
 
-
             <div class="span5">
-                <h4>current vs total (negative) vs baseline</h4>
-                <div class="visual-progress-summary-current">38</div>
-                <div style="display: inline-block; width: 80%">
-                    <div class="negative-tripple"></div>
-                    <div>of 32 hours with baseline of 45</div>
-                </div>  
+                <div id="negative-tripple"></div>
             </div>
         </div>
 
@@ -64,24 +43,30 @@
     <script type="text/javascript">
         $(function () {
 
-            $('.positive-double').bulletChart({
-                current: 35,
+            $('#positive-double').bulletChart({
+                title: 'positive-double',
+                current: 35.5,
                 total: 45
             });
 
-            $('.negative-double').bulletChart({
+            $('#negative-double').bulletChart({
+                title: 'negative-double',
                 current: 54.5,
                 total: 45
             });
 
-            $('.positive-tripple').bulletChart({
+            $('#positive-tripple').bulletChart({
+                title: 'positive-tripple',
+                subtitleFormat: '{0} hours with a baseline off {1}',
                 current: 32,
                 total: 38,
                 baseline: 45
             });
 
-            $('.negative-tripple').bulletChart({
-                current: 38,
+            $('#negative-tripple').bulletChart({
+                title: 'negative-tripple',
+                subtitleFormat: '{0} hours with a baseline off {1}',
+                current: 38.15,
                 total: 32,
                 baseline: 45
             });
