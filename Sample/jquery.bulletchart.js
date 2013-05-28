@@ -6,7 +6,8 @@
     baseline: 'visual-progress-baseline',
     unallocated: 'visual-progress-unallocated',
     underallocated: 'visual-progress-underallocated',
-    overallocted: 'visual-progress-overallocated'
+    overallocted: 'visual-progress-overallocated',
+    overallocatedTotal: 'visual-progress-overallocted-total'
 };
 
 (function ($) {
@@ -138,12 +139,13 @@
             var totalValue = $('<div>');
             var currentValue = $('<div>');
 
-            var firstLayer = options.baseline > options.total ? bulletChartClasses.baseline : bulletChartClasses.total;
+            var firstLayer = options.baseline > options.total ? bulletChartClasses.baseline : bulletChartClasses.overallocatedTotal;
             var firstElement = $('<div>').addClass(firstLayer).css('width', '100%');
 
             if (firstLayer == bulletChartClasses.baseline) {
 
                 if (options.current <= options.total) {
+                    // baseline > total > current
                     var totalWidth = (options.total / options.baseline) * 100;
                     var currentWidth = (options.current / options.total) * 100;
 
@@ -161,7 +163,31 @@
                     firstElement.append(totalValue);
                     animateSlideToLeft(container);
 
+                } else if (options.current > options.baseline) {
+                    // current > baseline > total
+                    firstElement.removeClass(firstLayer);
+                    firstElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
+
+                    var totalWidth = (options.total / options.current) * 100;
+                    var currentWidth = (options.total / options.baseline) * 100;
+
+                    currentValue
+                        .addClass(bulletChartClasses.baseline)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', currentWidth + '%');
+
+                    totalValue
+                        .addClass(bulletChartClasses.total)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', totalWidth + '%');
+
+                    currentValue.append(totalValue);
+                    firstElement.append(currentValue);
+                    animateSlideToLeft(container);
+
+
                 } else {
+                    // baseline > current > total
                     var totalWidth = (options.total / options.current) * 100;
                     var currentWidth = (options.total / options.baseline) * 100;
 
@@ -172,6 +198,48 @@
 
                     totalValue
                         .addClass(bulletChartClasses.total)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', totalWidth + '%');
+
+                    currentValue.append(totalValue);
+                    firstElement.append(currentValue);
+                    animateSlideToLeft(container);
+                }
+            } else {
+                if (options.current <= options.total) {
+                    // total > baseline > current
+                    var totalWidth = (options.baseline / options.total) * 100;
+                    var currentWidth = (options.current / options.total) * 100;
+
+                    totalValue
+                        .addClass(bulletChartClasses.baseline)
+                        .addClass(bulletChartClasses.unallocated)
+                        .css('width', totalWidth + '%');
+
+                    currentValue
+                        .addClass(bulletChartClasses.current)
+                        .addClass(bulletChartClasses.underallocated)
+                        .css('width', currentWidth + '%');
+
+                    totalValue.append(currentValue);
+                    firstElement.append(totalValue);
+                    animateSlideToLeft(container);
+
+                } else if(options.current > options.total) {
+                    // current > total > baseline
+                    firstElement.removeClass(firstLayer);
+                    firstElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
+
+                    var totalWidth = (options.total / options.current) * 100;
+                    var currentWidth = (options.total / options.current) * 100;
+
+                    currentValue
+                        .addClass(bulletChartClasses.total)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', currentWidth + '%');
+
+                    totalValue
+                        .addClass(bulletChartClasses.baseline)
                         .addClass(bulletChartClasses.overallocted)
                         .css('width', totalWidth + '%');
 

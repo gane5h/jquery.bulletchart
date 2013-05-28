@@ -24,10 +24,25 @@
     border-right: 2px solid dodgerblue;
 }
 
+.visual-progress-overallocted-total {
+    border-right: 2px solid black;
+    background-color: #e6b9b8;
+}
+
 .visual-progress-baseline > .visual-progress-unallocated {
     background-color: #dcdcdc
 }
 
+.visual-progress-total > .visual-progress-baseline,
+.visual-progress-current > .visual-progress-baseline {
+    background-color: #e6b9b8;
+}
+
+.visual-progress-current > .visual-progress-baseline,
+.visual-progress-baseline > .visual-progress-total,
+.visual-progress-container > .visual-progress-current,
+.visual-progress-total > .visual-progress-baseline,
+.visual-progress-baseline > .visual-progress-current,
 .visual-progress-total > .visual-progress-current,
 .visual-progress-container > .visual-progress-baseline,
 .visual-progress-current > .visual-progress-total {
