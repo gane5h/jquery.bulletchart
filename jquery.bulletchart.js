@@ -27,6 +27,7 @@
 
         options = $.extend({
             subtitleFormat: 'of {0}h',
+            animate: true,
         }, options);
 
         var self = this;
@@ -115,7 +116,10 @@
 
                 totalValue.append(currentValue);
                 container.append(totalValue);
-                animateSlideToLeft(container);
+                
+                if (options.animate) {
+                    animateSlideToLeft(container);
+                }
             } else {
                 width = 100 - (width - 100);
 
@@ -131,7 +135,10 @@
 
                 currentValue.append(totalValue);
                 container.append(currentValue);
-                animateSlideToLeft(container);
+
+                if (options.animate) {
+                    animateSlideToLeft(container);
+                }
             }
         };
 
@@ -199,7 +206,11 @@
 
             secondElement.append(thirdElement);
             topElement.append(secondElement);
-            animateSlideToLeft(container);
+
+            if (options.animate) {
+                animateSlideToLeft(container);
+            }
+
             container.append(topElement);
         };
 
@@ -238,6 +249,6 @@
         validateOptions();
         resolveOptions();
         createHtml();
-
+        return self;
     }
 }(jQuery));
