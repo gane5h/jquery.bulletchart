@@ -64,19 +64,19 @@
         $(function () {
 
             $('#positive-double').bulletChart({
-                title: 'positive-double',
+                title: 'total > current',
                 current: 35.5,
                 total: 45
             });
 
             $('#negative-double').bulletChart({
-                title: 'negative-double',
+                title: 'current > total',
                 current: 54.5,
                 total: 45
             });
 
             $('#positive-tripple').bulletChart({
-                title: 'positive-tripple',
+                title: 'baseline > total > current',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 32,
                 total: 38,
@@ -84,7 +84,7 @@
             });
 
             $('#negative-tripple').bulletChart({
-                title: 'negative-tripple',
+                title: 'baseline > current > total',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 38,
                 total: 34,
@@ -92,7 +92,7 @@
             });
 
             $('#positive-tripple-semi-negative-baseline').bulletChart({
-                title: 'positive-tripple-semi-negative-baseline',
+                title: 'total > baseline > current',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 32,
                 total: 40,
@@ -100,7 +100,7 @@
             });
 
             $('#positive-tripple-negative-baseline').bulletChart({
-                title: 'positive-tripple-negative-baseline',
+                title: 'total > current > baseline',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 38,
                 total: 44,
@@ -108,7 +108,7 @@
             });
 
             $('#negative-tripple-semi-negative-baseline').bulletChart({
-                title: 'negative-tripple-semi-negative-baseline',
+                title: 'current > baseline > total',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 38,
                 total: 34,
@@ -116,7 +116,7 @@
             });
 
             $('#negative-tripple-negative-baseline').bulletChart({
-                title: 'negative-tripple-negative-baseline',
+                title: 'current > total > baseline',
                 subtitleFormat: 'of {0} hours with a baseline of {1}',
                 current: 44,
                 total: 38,

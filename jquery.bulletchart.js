@@ -139,10 +139,10 @@
             var totalValue = $('<div>');
             var currentValue = $('<div>');
 
-            var firstLayer = options.baseline > options.total ? bulletChartClasses.baseline : bulletChartClasses.overallocatedTotal;
-            var firstElement = $('<div>').addClass(firstLayer).css('width', '100%');
+            var topElementStyle = options.baseline > options.total ? bulletChartClasses.baseline : bulletChartClasses.overallocatedTotal;
+            var topElement = $('<div>').addClass(topElementStyle).css('width', '100%');
 
-            if (firstLayer == bulletChartClasses.baseline) {
+            if (topElementStyle == bulletChartClasses.baseline) {
 
                 if (options.current <= options.total) {
                     // baseline > total > current
@@ -160,13 +160,13 @@
                         .css('width', currentWidth + '%');
 
                     totalValue.append(currentValue);
-                    firstElement.append(totalValue);
+                    topElement.append(totalValue);
                     animateSlideToLeft(container);
 
-                } else if (options.current > options.baseline) {
+                } else if (options.current >= options.baseline) {
                     // current > baseline > total
-                    firstElement.removeClass(firstLayer);
-                    firstElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
+                    topElement.removeClass(topElementStyle);
+                    topElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
 
                     var totalWidth = (options.total / options.current) * 100;
                     var currentWidth = (options.total / options.baseline) * 100;
@@ -182,7 +182,7 @@
                         .css('width', totalWidth + '%');
 
                     currentValue.append(totalValue);
-                    firstElement.append(currentValue);
+                    topElement.append(currentValue);
                     animateSlideToLeft(container);
 
 
@@ -202,11 +202,11 @@
                         .css('width', totalWidth + '%');
 
                     currentValue.append(totalValue);
-                    firstElement.append(currentValue);
+                    topElement.append(currentValue);
                     animateSlideToLeft(container);
                 }
             } else {
-                if (options.current <= options.total) {
+                if (options.current <= options.total && options.current <= options.baseline) {
                     // total > baseline > current
                     var totalWidth = (options.baseline / options.total) * 100;
                     var currentWidth = (options.current / options.total) * 100;
@@ -222,13 +222,13 @@
                         .css('width', currentWidth + '%');
 
                     totalValue.append(currentValue);
-                    firstElement.append(totalValue);
+                    topElement.append(totalValue);
                     animateSlideToLeft(container);
 
-                } else if(options.current > options.total) {
+                } else if (options.current >= options.total) {
                     // current > total > baseline
-                    firstElement.removeClass(firstLayer);
-                    firstElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
+                    topElement.removeClass(topElementStyle);
+                    topElement.addClass(bulletChartClasses.current).addClass(bulletChartClasses.overallocted);
 
                     var totalWidth = (options.total / options.current) * 100;
                     var currentWidth = (options.total / options.current) * 100;
@@ -244,12 +244,30 @@
                         .css('width', totalWidth + '%');
 
                     currentValue.append(totalValue);
-                    firstElement.append(currentValue);
+                    topElement.append(currentValue);
+                    animateSlideToLeft(container);
+                } else {
+                    // total > current > baseline
+                    var totalWidth = (options.current / options.total) * 100;
+                    var currentWidth = (options.baseline / options.current) * 100;
+
+                    currentValue
+                        .addClass(bulletChartClasses.current)
+                        .addClass(bulletChartClasses.underallocated)
+                        .css('width', currentWidth + '%');
+
+                    totalValue
+                        .addClass(bulletChartClasses.baseline)
+                        .addClass(bulletChartClasses.overallocted)
+                        .css('width', totalWidth + '%');
+
+                    currentValue.append(totalValue);
+                    topElement.append(currentValue);
                     animateSlideToLeft(container);
                 }
             }
 
-            container.append(firstElement);
+            container.append(topElement);
         }
 
         function animateSlideToLeft(element) {
