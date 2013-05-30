@@ -15,6 +15,12 @@ Configuration Defaults / Options
 * `total: float (required)` - the total (estimated) value
 * `baseline: float (optional)` - a given baseline
 
+You can also use data attributes.
+
+* `data-current: current`
+* `data-total: total`
+* `data-baseline: baseline`
+
 Examples
 ========
 
@@ -27,6 +33,10 @@ The html:
 
     <div class="span5">
         <div id="advanced-bulletchart"></div>
+    </div>
+    
+    <div class="span5">
+        <div id="bulletchart-with-data-attributes" data-current="54.5" data-total="45"></div>
     </div>
 </div>
 ```
@@ -50,4 +60,9 @@ $('#advanced-bulletchart').bulletChart({
     total: 38,
     baseline: 42
 });
+```
+
+<b>Using data attributes</b>
+```
+$('#bulletchart-with-data-attributes').bulletChart();
 ```
