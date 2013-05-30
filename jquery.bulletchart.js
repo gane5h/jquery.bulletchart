@@ -19,8 +19,8 @@
                 var args = arguments;
                 return this.replace(/{(\d+)}/g, function (match, number) {
                     return typeof args[number] != 'undefined'
-                      ? args[number]
-                      : match;
+                        ? args[number]
+                        : match;
                 });
             };
         }
@@ -37,13 +37,31 @@
         }
 
         function validateOptions() {
-            if (!options.current)
-                throw 'Options must contains an element \'current\'.';
-            if (!options.total)
-                throw 'Options must contains an element \'total\'.';
-            if (options.baseline == '')
-                options.baseline = undefined;
-        };
+            if (!options.current) {
+                var dataCurrent = self.data('current');
+                if (dataCurrent == undefined || dataCurrent == '') {
+                    throw 'Options must contains an element \'current\'.';
+                } else {
+                    options.current = dataCurrent;
+                }
+            }
+            if (!options.total) {
+                var dataTotal = self.data('total');
+                if (dataTotal == undefined || dataTotal == '') {
+                    throw 'Options must contains an element \'total\'.';
+                } else {
+                    options.total = dataTotal;
+                }
+            }
+            if (!options.baseline || options.baseline == '') {
+                var dataBaseline = self.data('data');
+                if (dataBaseline == undefined || dataBaseline == '') {
+                    options.baseline = undefined;
+                } else {
+                    options.baseline = dataBaseline;
+                }
+            }
+        }
 
         function resolveOptions() {
             if (options.current.constructor === String) {
@@ -58,7 +76,7 @@
                 options.baseline = options.baseline.replace(',', '.');
                 options.baseline = parseFloat(options.baseline);
             }
-        };
+        }
 
         function createHtml() {
 
@@ -95,7 +113,7 @@
             } else {
                 createTripleBulletChart(container);
             }
-        };
+        }
 
         function createDoubleBulletChart(container) {
 
@@ -116,7 +134,7 @@
 
                 totalValue.append(currentValue);
                 container.append(totalValue);
-                
+
                 if (options.animate) {
                     animateSlideToLeft(container);
                 }
@@ -140,7 +158,7 @@
                     animateSlideToLeft(container);
                 }
             }
-        };
+        }
 
         function createTripleBulletChart(container) {
             var secondElement = $('<div>');
@@ -212,7 +230,7 @@
             }
 
             container.append(topElement);
-        };
+        }
 
         function determineTopElementStyle() {
             // permutations:
@@ -230,11 +248,11 @@
             } else {
                 return styles.current;
             }
-        };
+        }
 
         function configureElement(element, style, subStyle, width) {
             return element.addClass(style).addClass(subStyle).width(width + '%');
-        };
+        }
 
         function animateSlideToLeft(element) {
 
@@ -250,5 +268,5 @@
         resolveOptions();
         createHtml();
         return self;
-    }
+    };
 }(jQuery));
